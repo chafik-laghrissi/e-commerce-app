@@ -14,7 +14,7 @@ module.exports = (app) => {
     passport.authenticate("google", { failureRedirect: "/sign%20in" }),
     function (req, res) {
       // Successful authentication, redirect home.
-      res.json("success");
+      res.redirect("/");
     }
   );
   app;
@@ -24,7 +24,7 @@ module.exports = (app) => {
     passport.authenticate("facebook", { scope: ["user_friends", "email"] }),
     function (req, res) {
       // Successful authentication, redirect home.
-      res.json("success");
+      res.redirect("/");
     }
   );
   app.get(
@@ -32,7 +32,7 @@ module.exports = (app) => {
     passport.authenticate("facebook", { failureRedirect: "/sign%20in" }),
     function (req, res) {
       // Successful authentication, redirect home.
-      res.json("success");
+      res.redirect("/");
     }
   );
   app.get("/api/current_user", (req, res) => {
@@ -59,7 +59,9 @@ module.exports = (app) => {
     })(req, res, next);
   });
 
-
+  app.get("/failure", (req, res) => {
+    res.send("failed to register");
+  });
 
   app.post("/api/login", (req, res, next) => {
     passport.authenticate("local-signin", function (error, user, info) {
