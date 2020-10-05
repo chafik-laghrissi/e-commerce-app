@@ -9,72 +9,84 @@ module.exports = (app) => {
       scope: ["profile", "email"],
     })
   );
-
-  app.get("/auth/google/callback", passport.authenticate("google"));
-
-  app.get("/api/current_user", (req, res) => {
-    if(req.user)
-    {
-      const {username,lName,email,_id}=req.user
-    res.json({username,lName,email,_id});
+  app.get(
+    "/auth/google/callback",
+    passport.authenticate("google", { failureRedirect: "/sign%20in" }),
+    function (req, res) {
+      // Successful authentication, redirect home.
+      res.json("success");
     }
-    else
-    {
-      res.json();
+  );
+  app;
+
+  app.get(
+    "/auth/facebook",
+    passport.authenticate("facebook", { scope: ["user_friends", "email"] }),
+    function (req, res) {
+      // Successful authentication, redirect home.
+      res.json("success");
+    }
+  );
+  app.get(
+    "/auth/facebook/callback",
+    passport.authenticate("facebook", { failureRedirect: "/sign%20in" }),
+    function (req, res) {
+      // Successful authentication, redirect home.
+      res.json("success");
+    }
+  );
+  app.get("/api/current_user", (req, res) => {
+    if (req.user) {
+      const { username, lName, email, _id,cart } = req.user;
+      res.json({ username, lName, email, _id,cart, success: true });
+    } else {
+      res.json(null);
     }
   });
 
-
-  app.post("/api/register",(req,res,next)=>{
-    
-    passport.authenticate("local-signup",function(err,user,info){
-      console.log(user);
-      if(user)
-      {
-        req.logIn(user,function(err,data){
-          if(err)
-          console.log(err);
-          else
-          res.json(data);
-        } )
+  app.post("/api/register", (req, res, next) => {
+    passport.authenticate("local-signup", function (err, user, info) {
+      if (user) {
+        req.logIn(user, function (err, data) {
+          if (err) console.log(err);
+          else {const { username, lName, email, _id,cart } = user;
+          const currentUser = { username, lName, email, _id,cart };
+            res.json({ currentUser, success: true })};
+        });
+      } else {
+        res.json({ error: err, success: false });
       }
-      else
-      {
-        res.json({message:err});
+    })(req, res, next);
+  });
+
+
+
+  app.post("/api/login", (req, res, next) => {
+    passport.authenticate("local-signin", function (error, user, info) {
+      if (user) {
+        req.logIn(user, function (err) {
+          if (err) console.log(err);
+          else {
+            const { username, lName, email, _id } = user;
+            const currentUser = { username, lName, email, _id };
+            res.json({ success: true, currentUser });
+          }
+        });
+      } else {
+        res.json({
+          message: "email or password wrong try again!",
+          success: false,
+        });
       }
-    })(req,res,next);
-    
-  } );
-
-
-app.get("/failure",(req,res)=>{
-  res.send("failed to register");
-})
-
-app.post("/api/login",(req,res,next)=>{
-  
-  passport.authenticate("local-signin",function(err,user,info){
-
-    if(user)
-    {
-      req.logIn(user,function(error){
-        if(err)
-        console.log(error) 
-    });}
-    else
-    {
-      res.json({message:"oops something went wrong! "});
-    }
-  })(req,res,next);
-  console.log(req.user);
-} );
-
-
-
+    })(req, res, next);
+  });
 
   app.get("/api/logout", (req, res) => {
-    req.logout();
-    console.log("log out user");
-    res.send(req.user);
+    try {
+      req.logout();
+      res.json({ message: "okay", currentUser: null, success: true });
+    } catch (error) {
+      res.json({ message: "log out error", error: error, success: false });
+    }
   });
 };

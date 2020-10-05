@@ -3,16 +3,20 @@ const Strategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
 const _ = require("lodash");
-const saltRounds = 10;
-const SignInStrategy = new Strategy( { passReqToCallback: true},
-  (req, username, password, done) => {
-    const email = _.toLower(req.body.email);
-    User.findOne({ email: email }, (err, foundUser) => {
+const SignInStrategy = new Strategy( { passReqToCallback: true,usernameField:"email"},
+  (req, email, password, done) => {
+    const emailForm = _.toLower(email);
+    User.findOne({ email: emailForm }, (err, foundUser) => {
       if (err) return done(err, null);
       else {
         if (foundUser) 
         {
+          bcrypt.compare(password, foundUser.password,(error,match)=>{
+            if(match)
             return done(null,foundUser);
+            else
+            return done (error,false);
+          });
           
         }
         else
