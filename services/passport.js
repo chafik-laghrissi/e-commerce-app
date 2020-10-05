@@ -21,7 +21,7 @@ passport.use("local-signin", SignInStrategy);
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientID: "385219539559-37m1rhkvo45qqlqccnstgc5o2uigq5ge.apps.googleusercontent.com",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "/auth/google/callback",
     },
