@@ -38,10 +38,10 @@ require("./routes/cartRoutes")(app);
 require("./routes/billingRoutes")(app);
 if(process.env.NODE_ENV==="production")
 {
-  app.use(express.static("/client/build/static"));
-  // const path=require("path");
+  app.use(express.static("/client/build"));
+  const path=require("path");
   app.get("*",(req,res)=>{
-    res.sendFile(__dirname+"/client/build/static/index.html");
+    res.sendFile(path.resolve(__dirname,"client","build","index.html"));
   })
 }
 const port = process.env.PORT || 5000;
