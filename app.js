@@ -37,7 +37,7 @@ require("./routes/sectionRoutes")(app);
 require("./routes/cartRoutes")(app);
 require("./routes/billingRoutes")(app);
 if(process.env.NODE_ENV==="production")
-{client\build\index.html
+{
   app.use(express.static("/client/build/static"));
   // const path=require("path");
   app.get("*",(req,res)=>{
