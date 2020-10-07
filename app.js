@@ -45,7 +45,7 @@ require("./routes/itemRoutes")(app);
 require("./routes/sectionRoutes")(app);
 require("./routes/cartRoutes")(app);
 require("./routes/billingRoutes")(app);
-console.log(env);
+
 if (env=== "production") {
   app.use(express.static(__dirname + "/build"));
   app.get('*', function (req, res) {
