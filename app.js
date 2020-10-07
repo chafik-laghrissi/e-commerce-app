@@ -13,10 +13,13 @@ require("./models/Section");
 require("./services/passport");
 mongoose.set("useCreateIndex", true);
 
-mongoose.connect(`mongodb+srv://chafik-laghrissi:${process.env.DB_PASSWORD}@cluster0.ea22q.mongodb.net/e-commerceDB?retryWrites=true&w=majority`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  `mongodb+srv://chafik-laghrissi:${process.env.DB_PASSWORD}@cluster0.ea22q.mongodb.net/e-commerceDB?retryWrites=true&w=majority`,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 const app = express();
 
 // app.use(cookieParser())
@@ -29,17 +32,32 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(__dirname + "/client/build"));
+}
+else
+{
+  app.use(express.static(__dirname + "/client/build"));
+}
+// const path=require("path");
+// app.get("*",(req,res)=>{
+//   res.sendFile(path.resolve(__dirname,"client","build","index.html"));
+// })
 require("./routes/authRoutes")(app);
 require("./routes/collectionRoutes")(app);
 require("./routes/itemRoutes")(app);
 require("./routes/sectionRoutes")(app);
 require("./routes/cartRoutes")(app);
 require("./routes/billingRoutes")(app);
-if(process.env.NODE_ENV==="production")
-{
-  app.use(express.static("/client/build"));
-}
+// if(process.env.NODE_ENV==="production")
+// {
+//   app.use(express.static("/client/build"));
+//   const path=require("path");
+//   app.get("*",(req,res)=>{
+//     res.sendFile(path.resolve(__dirname,"client","build","index.html"));
+//   })
+// }
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log("your server is running on port " + port);
