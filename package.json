@@ -6,10 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "set NODE_ENV=production && node app.js",
-    "server":"nodemon app.js",
-    "build":"cd client && npm build",
-    "client":"cd client && npm install",
-    "heroku-postBuild":" run npm client && run npm build"
+    "server":"nodemon app.js"
   },
   "author": "Chafik LAGHRISSI",
   "license": "ISC",
