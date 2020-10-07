@@ -52,6 +52,10 @@ if (env=== "production") {
     const index = path.join(__dirname,'build', 'index.html');
     res.sendFile(index);
   });
+  app.get("/google2354c42cd7537412",(req,res)=>{
+  res.sendFile(__dirname + "/build/google2354c42cd7537412.html")
+  })
+  
   
 }
 else
@@ -60,6 +64,7 @@ else
   app.get('*', function (req, res) {
     const index = path.join(__dirname, 'build', 'index.html');
     res.sendFile(index);
+  
   });
   
 }
