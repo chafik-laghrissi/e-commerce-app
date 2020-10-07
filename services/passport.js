@@ -55,7 +55,6 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       const foundUser = await User.findOne({ facebookId: profile.id });
-      console.log(profile);
       if (foundUser) {
         // we already have a record with the given profile ID
         return done(null, foundUser);
