@@ -47,18 +47,18 @@ require("./routes/cartRoutes")(app);
 require("./routes/billingRoutes")(app);
 console.log(env);
 if (env=== "production") {
-  app.use(express.static(__dirname + "/client/build"));
+  app.use(express.static(__dirname + "/build"));
   app.get('*', function (req, res) {
-    const index = path.join(__dirname, "client",'build', 'index.html');
+    const index = path.join(__dirname,'build', 'index.html');
     res.sendFile(index);
   });
   
 }
 else
 {
-  app.use(express.static(__dirname + "/client/build"));
+  app.use(express.static(__dirname + "/build"));
   app.get('*', function (req, res) {
-    const index = path.join(__dirname, "client", 'build', 'index.html');
+    const index = path.join(__dirname, 'build', 'index.html');
     res.sendFile(index);
   });
   
