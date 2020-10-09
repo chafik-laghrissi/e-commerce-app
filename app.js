@@ -5,8 +5,8 @@ const cookieSession = require("cookie-session");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 // var cookieParser = require('cookie-parser')
- const path=require("path");
-const env=process.env.NODE_ENV || 'development';
+const path = require("path");
+const env = process.env.NODE_ENV || "development";
 require("./models/User");
 require("./models/Item");
 require("./models/Collection");
@@ -34,8 +34,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-
 // app.get("*",(req,res)=>{
 //   res.sendFile(path.resolve(__dirname,"client","build","index.html"));
 // })
@@ -46,27 +44,21 @@ require("./routes/sectionRoutes")(app);
 require("./routes/cartRoutes")(app);
 require("./routes/billingRoutes")(app);
 
-if (env=== "production") {
+if (env === "production") {
   app.use(express.static(__dirname + "/build"));
-  app.get('*', function (req, res) {
-    const index = path.join(__dirname,'build', 'index.html');
+  app.get("*", function (req, res) {
+    const index = path.join(__dirname, "build", "index.html");
     res.sendFile(index);
   });
-  app.get("/google2354c42cd7537412",(req,res)=>{
-  res.sendFile(__dirname + "/build/google2354c42cd7537412.html")
-  })
-  
-  
-}
-else
-{
-  app.use(express.static(__dirname + "/build"));
-  app.get('*', function (req, res) {
-    const index = path.join(__dirname, 'build', 'index.html');
-    res.sendFile(index);
-  
+  app.get("/google2354c42cd7537412", (req, res) => {
+    res.sendFile(__dirname + "/build/google2354c42cd7537412.html");
   });
-  
+} else {
+  app.use(express.static(__dirname + "/build"));
+  app.get("*", function (req, res) {
+    const index = path.join(__dirname, "build", "index.html");
+    res.sendFile(index);
+  });
 }
 
 const port = process.env.PORT || 5000;

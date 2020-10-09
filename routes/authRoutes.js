@@ -21,7 +21,7 @@ module.exports = (app) => {
 
   app.get(
     "/auth/facebook",
-    passport.authenticate("facebook", { scope: ["user_friends", "email"] }),
+    passport.authenticate("facebook", { scope: [ "email"] }),
     function (req, res) {
       // Successful authentication, redirect home.
       res.redirect("/");
