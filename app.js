@@ -33,10 +33,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
-// app.get("*",(req,res)=>{
-//   res.sendFile(path.resolve(__dirname,"client","build","index.html"));
-// })
 require("./routes/authRoutes")(app);
 require("./routes/collectionRoutes")(app);
 require("./routes/itemRoutes")(app);
